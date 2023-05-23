@@ -1,5 +1,7 @@
+import stage from './modules/stage'
+
 export default {
-  modules: {},
+  modules: {stage},
   state: () => ({
     modals: [],
     isLoading: false
