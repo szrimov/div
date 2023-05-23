@@ -1,17 +1,30 @@
 <template lang="pug">
   .progress-bar-component
-    ul.progress-bar(ref="progressBar")
-      li.progress-bar__separator
-      li.progress-bar__separator
-      li.progress-bar__separator
-      li.progress-bar__separator
-      li.progress-bar__separator
-    .progress-bar__fill(ref="progressBarFill")
+    .progress-bar__icons
+      iconStar(
+        v-for="(_, index) in 5"
+        :key="index"
+        :ref="`starIcon${index}`")
+      .progress-bar__icon-union
+        iconUnion
+    .progress-bar__wrapper
+      ul.progress-bar__inner(ref="progressBar")
+        li.progress-bar__separator(
+          v-for="(_, index) in 5"
+          :key="index")
+      .progress-bar__fill(ref="progressBarFill")
 </template>
 
 <script>
+import iconStar from '@components/icons/star'
+import iconUnion from '@components/icons/union'
+
 export default {
   name: 'progress-bar-component',
+  components: {
+    iconStar,
+    iconUnion
+  },
   data() {
     return {
       score: 1
@@ -23,7 +36,7 @@ export default {
         return this.getProgress({ min: 0, max: 25 })
       }
       if (this.score > 25 && this.score <= 50) {
-        return this.getProgress({ min: 0, max: 25, offset: 1 })
+        return this.getProgress({ min: 25, max: 50, offset: 1 })
       }
       if (this.score > 50 && this.score <= 100) {
         return this.getProgress({ min: 50, max: 100, offset: 2 })
@@ -44,6 +57,10 @@ export default {
     getProgress({ min, max, offset = 0 }) {
       const step = 100 / 6
       const residual = max - min
+      for (let i = 0; i < offset; i++) {
+        this.$refs[`starIcon${i}`][0].$el.style.fill = '#3300ff'
+      }
+
       return ((this.score - min) / residual) * step + step * offset
     }
   },
@@ -55,11 +72,30 @@ export default {
 
 <style lang="scss" scoped>
 .progress-bar-component {
-  position: relative;
-  width: 100%;
-  border-radius: 30px;
-  overflow: hidden;
-  .progress-bar {
+  .progress-bar__icons {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, calc(20% - 1.25px));
+    padding-left: calc(16.67% - 12px);
+    height: 25px;
+    svg {
+      color: $color-primary;
+      fill: $color-secondary;
+    }
+  }
+  .progress-bar__icon-union {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .progress-bar__wrapper {
+    margin-top: 10px;
+    position: relative;
+    width: 100%;
+    border-radius: 30px;
+    overflow: hidden;
+  }
+  .progress-bar__inner {
     height: 40px;
     display: flex;
     justify-content: space-evenly;
