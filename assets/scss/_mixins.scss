@@ -1,0 +1,20 @@
+@mixin vp--1366 {
+  @media (max-width: 1366px) {
+    @content;
+  }
+}
+@mixin vp--1367 {
+  @media (min-width: 1367px) {
+    @content;
+  }
+}
+
+@mixin font-face($font-family, $file-path, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: $font-family;
+    font-weight: $weight;
+    font-style: $style;
+    src: url('#{$file-path}.woff2') format('woff2'),
+      url('#{$file-path}.woff') format('woff');
+  }
+}
