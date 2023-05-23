@@ -13,6 +13,10 @@
           v-for="(_, index) in 5"
           :key="index")
       .progress-bar__fill(ref="progressBarFill")
+    ul.progress-bar__score
+      li.progress-bar__score-item(
+        v-for="(item, index) in scores"
+        :key="index") {{ getValue(item) }}
 </template>
 
 <script>
@@ -27,7 +31,37 @@ export default {
   },
   data() {
     return {
-      score: 1
+      score: 12,
+      scores: [
+        {
+          currentValue: 0,
+          defaultValue: 0
+        },
+        {
+          currentValue: 0,
+          defaultValue: 25
+        },
+        {
+          currentValue: 0,
+          defaultValue: 50
+        },
+        {
+          currentValue: 0,
+          defaultValue: 100
+        },
+        {
+          currentValue: 0,
+          defaultValue: 200
+        },
+        {
+          currentValue: 0,
+          defaultValue: 500
+        },
+        {
+          currentValue: 0,
+          defaultValue: 1000
+        }
+      ]
     }
   },
   computed: {
@@ -60,8 +94,20 @@ export default {
       for (let i = 0; i < offset; i++) {
         this.$refs[`starIcon${i}`][0].$el.style.fill = '#3300ff'
       }
-
+      this.scores = this.scores.map(el => {
+        if (el.defaultValue > min && el.defaultValue <= max) {
+          el.currentValue = this.score
+        } else {
+          el.currentValue = 0
+        }
+        return el
+      })
       return ((this.score - min) / residual) * step + step * offset
+    },
+    getValue(item) {
+      return item.currentValue
+        ? `${item.currentValue}/${item.defaultValue}`
+        : item.defaultValue
     }
   },
   mounted() {
@@ -114,6 +160,13 @@ export default {
     left: 0;
     height: 100%;
     background: $color-primary;
+  }
+  .progress-bar__score {
+    margin-top: 13px;
+    display: flex;
+    justify-content: space-between;
+    color: $color-black;
+    opacity: 0.5;
   }
 }
 </style>
