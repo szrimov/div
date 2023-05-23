@@ -29,9 +29,14 @@ export default {
     iconStar,
     iconUnion
   },
+  props: {
+    score: {
+      type: Number,
+      default: () => 0
+    }
+  },
   data() {
     return {
-      score: 12,
       scores: [
         {
           currentValue: 0,
@@ -87,6 +92,11 @@ export default {
       return 0
     }
   },
+  watch: {
+    score() {
+      this.$refs.progressBarFill.style.width = `${this.progress}%`
+    }
+  },
   methods: {
     getProgress({ min, max, offset = 0 }) {
       const step = 100 / 6
@@ -109,9 +119,6 @@ export default {
         ? `${item.currentValue}/${item.defaultValue}`
         : item.defaultValue
     }
-  },
-  mounted() {
-    this.$refs.progressBarFill.style.width = `${this.progress}%`
   }
 }
 </script>
